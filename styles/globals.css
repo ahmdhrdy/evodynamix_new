@@ -1,0 +1,80 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply bg-gradient-to-b from-[#000000] to-[#1A2A44] text-white font-sans antialiased;
+}
+
+/* Container */
+.container {
+  @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+}
+
+/* Headings */
+h1, h2, h3, h4, h5, h6 {
+  @apply font-bold tracking-tight;
+}
+
+h1 {
+  @apply text-4xl md:text-5xl;
+}
+
+h2 {
+  @apply text-3xl md:text-4xl;
+}
+
+h3 {
+  @apply text-xl md:text-2xl;
+}
+
+/* Links */
+a {
+  @apply transition duration-300;
+}
+
+/* Buttons */
+button {
+  @apply focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#00C4B4] transition duration-300;
+}
+
+/* Section Padding */
+section {
+  @apply py-16;
+}
+
+/* Card Styling */
+.card {
+  @apply bg-[#2A2A3D]/80 rounded-lg shadow-lg transition-all duration-300;
+}
+
+/* Responsive Navbar */
+@media (max-width: 640px) {
+  .navbar .flex.space-x-6 {
+    @apply flex-col space-y-4 mt-4;
+  }
+  .navbar .flex.justify-between {
+    @apply flex-col items-center;
+  }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-[#1A1A2E];
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-[#00C4B4] rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-[#00A399];
+}
