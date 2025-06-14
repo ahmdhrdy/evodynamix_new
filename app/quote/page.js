@@ -4,7 +4,7 @@ import { useState } from 'react';
 import Image from 'next/image';
 
 export default function QuotePage() {
-  const [formData, setFormData] = useState({ budget: '', timeline: '', application_type: '', email: '', description: '' });
+  const [formData, setFormData] = useState({ budget: '', timeline: 'Monthly', application_type: 'Web', email: '', description: '' });
   const [formStatus, setFormStatus] = useState('');
   const [notification, setNotification] = useState(null);
 
@@ -28,15 +28,24 @@ export default function QuotePage() {
         body: JSON.stringify(formData),
       });
 
-      const result = await res.json();
+      // Parse response as text first to handle non-JSON responses
+      const text = await res.text();
+      let result;
+      try {
+        result = JSON.parse(text);
+      } catch (parseErr) {
+        throw new Error('Server returned an invalid response. Please try again or contact support.');
+      }
+
       if (!res.ok) {
         throw new Error(result.error || `HTTP error! Status: ${res.status}`);
       }
 
-      showNotification('Quote request submitted successfully!');
+      showNotification('Quote request submitted successfully!', 'success');
       setFormStatus('');
-      setFormData({ budget: '', timeline: '', application_type: '', email: '', description: '' });
+      setFormData({ budget: '', timeline: 'Monthly', application_type: 'Web', email: '', description: '' });
     } catch (error) {
+      console.error('Error submitting quote request:', error);
       showNotification(error.message || 'Error occurred while submitting quote request.', 'error');
       setFormStatus('');
     }
@@ -87,7 +96,6 @@ export default function QuotePage() {
                   className="w-full p-3 bg-[#2A2A3D]/80 text-white rounded-lg border border-gray-600 focus:outline-none focus:border-[#00C4B4] transition duration-300"
                   required
                 >
-                  <option value="">Select Timeline</option>
                   <option value="Monthly">Monthly</option>
                   <option value="Yearly">Yearly</option>
                   <option value="DayByDay">Day By Day</option>
@@ -103,7 +111,6 @@ export default function QuotePage() {
                   className="w-full p-3 bg-[#2A2A3D]/80 text-white rounded-lg border border-gray-600 focus:outline-none focus:border-[#00C4B4] transition duration-300"
                   required
                 >
-                  <option value="">Select Application Type</option>
                   <option value="Android">Android</option>
                   <option value="DesktopPC">Desktop PC</option>
                   <option value="IOS">iOS</option>

@@ -210,12 +210,12 @@ export default function AdminDashboard() {
 
   // Sidebar menu items
   const menuItems = [
-    { id: "dashboard", label: "Dashboard", icon: "/dashboard-icon.png" },
-    { id: "services", label: "Services", icon: "/products-icon.png" },
-    { id: "projects", label: "Projects", icon: "/projects-icon.png" },
-    { id: "clients", label: "Clients", icon: "/clients-icon.png" },
-    { id: "orders", label: "Orders", icon: "/orders-icon.png" },
-    { id: "notifications", label: "Notifications", icon: "/notifications-icon.png" },
+    { id: "dashboard", label: "Dashboard", icon: "/dashboard.png" },
+    { id: "services", label: "Services", icon: "/service.png" },
+    { id: "projects", label: "Projects", icon: "/project.png" },
+    { id: "clients", label: "Clients", icon: "/client.png" },
+    { id: "orders", label: "Orders", icon: "/order.png" },
+    { id: "notifications", label: "Notifications", icon: "/notify.png" },
   ];
 
   return (
@@ -229,7 +229,7 @@ export default function AdminDashboard() {
         {/* Header */}
         <div className="p-4 bg-[#2A2A3D] rounded-lg shadow-lg mb-6 mt-10 flex justify-between items-center">
           <div className="flex items-center space-x-4">
-            <Image src="/logo.png" alt="Evodynamix Logo" width={40} height={40} className="rounded-full" />
+            <Image src="/dashboard.png" alt="Evodynamix Logo" width={40} height={40} className="rounded-full" />
             <h1 className="text-2xl font-bold text-[#00C4B4]">Dashboard</h1>
           </div>
           <div className="flex items-center space-x-4">
@@ -516,6 +516,8 @@ export default function AdminDashboard() {
                         <th className="p-2">Email</th>
                         <th className="p-2">Budget</th>
                         <th className="p-2">Timeline</th>
+                        <th className="p-2">Application Type</th>
+                        <th className="p-2">Description</th>
                         <th className="p-2">Submitted At</th>
                       </tr>
                     </thead>
@@ -525,6 +527,8 @@ export default function AdminDashboard() {
                           <td className="p-2">{request.email}</td>
                           <td className="p-2">{request.budget}</td>
                           <td className="p-2">{request.timeline}</td>
+                          <td className="p-2">{request.application_type}</td>
+                          <td className="p-2">{request.description}</td>
                           <td className="p-2">{new Date(request.submitted_at).toLocaleString()}</td>
                         </tr>
                       ))}
@@ -537,7 +541,7 @@ export default function AdminDashboard() {
             {/* Clients (Contact Submissions) Section */}
             {(activeSection === "dashboard" || activeSection === "clients") && (
               <section className="mb-12">
-                <h2 className="text-2xl font-bold text-white mb-4">Client List (Contact Submissions)</h2>
+                <h2 className="text-2xl font-bold text-white mb-4">Contact Submissions</h2>
                 <div className="bg-[#2A2A3D] p-4 rounded-lg shadow-lg mb-4">
                   <input
                     type="text"
@@ -554,6 +558,7 @@ export default function AdminDashboard() {
                         <th className="p-2">Name</th>
                         <th className="p-2">Email</th>
                         <th className="p-2">Phone</th>
+                        <th className="p-2">Message</th>
                         <th className="p-2">Submitted At</th>
                       </tr>
                     </thead>
@@ -563,6 +568,7 @@ export default function AdminDashboard() {
                           <td className="p-2">{submission.name}</td>
                           <td className="p-2">{submission.email}</td>
                           <td className="p-2">{submission.phone || "N/A"}</td>
+                          <td className="p-2">{submission.message || "N/A"}</td>
                           <td className="p-2">{new Date(submission.submitted_at).toLocaleString()}</td>
                         </tr>
                       ))}

@@ -150,7 +150,15 @@ export default function Home() {
         body: JSON.stringify(formData),
       });
 
-      const result = await res.json();
+      // Check response and parse as text first to handle non-JSON responses
+      const text = await res.text();
+      let result;
+      try {
+        result = JSON.parse(text);
+      } catch (parseErr) {
+        throw new Error('Server returned an invalid response. Please try again or contact support.');
+      }
+
       if (!res.ok) {
         throw new Error(result.error || `HTTP error! Status: ${res.status}`);
       }
@@ -159,6 +167,7 @@ export default function Home() {
       setFormStatus('');
       setFormData({ name: '', email: '', phone: '', message: '' });
     } catch (error) {
+      console.error('Error submitting contact form:', error);
       showNotification(error.message || 'Error occurred while sending message.', 'error');
       setFormStatus('');
     }
@@ -283,7 +292,7 @@ export default function Home() {
                   <h3 className="text-xl font-semibold mb-2">{service.title}</h3>
                   <p className="text-gray-400 mb-4 text-sm">{service.description}</p>
                   {Array.isArray(service.items) && service.items.length > 0 ? (
-                    <ul className="text-gray-400 list-disc pl-6 mb-4 text-left">
+                    <ul className="text-gray-300 list-disc pl-6 mb-4 text-left">
                       {service.items.map((item, i) => (
                         <li key={i} className="text-sm mb-1">{item}</li>
                       ))}
@@ -601,7 +610,7 @@ export default function Home() {
                   />
                 </div>
                 <div>
-                  <label htmlFor="phone" className="block text-white mb-2">Phone (Optional)</label>
+                  <label htmlFor="phone" className="block text-white mb-2">Phone</label>
                   <input
                     type="tel"
                     id="phone"
@@ -610,6 +619,7 @@ export default function Home() {
                     onChange={handleInputChange}
                     className="w-full p-3 bg-[#2A2A3D]/80 text-white rounded-lg border border-gray-600 focus:outline-none focus:border-[#00C4B4] transition duration-300"
                     placeholder="Your Phone Number"
+                    required
                   />
                 </div>
                 <div>

@@ -1,5 +1,5 @@
 const express = require('express');
-const mysql = require('mysql2/promise'); // Updated to promise-based
+const mysql = require('mysql2/promise');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const cors = require('cors');
@@ -260,6 +260,44 @@ app.get('/api/contact-submissions', authenticateToken, async (req, res) => {
   } catch (error) {
     console.error('Error fetching contact submissions:', error);
     res.status(500).json({ error: 'Server error' });
+  }
+});
+
+// Handle Contact Form Submission
+app.post('/api/contact', async (req, res) => {
+  try {
+    const { name, email, phone, message } = req.body;
+    if (!name || !email || !phone || !message) {
+      return res.status(400).json({ error: 'All fields (name, email, phone, message) are required' });
+    }
+
+    const [result] = await pool.query(
+      'INSERT INTO contact_submissions (name, email, phone, message, submitted_at) VALUES (?, ?, ?, ?, NOW())',
+      [name, email, phone, message]
+    );
+    res.status(201).json({ message: 'Contact form submitted successfully', id: result.insertId });
+  } catch (error) {
+    console.error('Error submitting contact form:', error);
+    res.status(500).json({ error: error.message || 'Server error' });
+  }
+});
+
+// Handle Quote Request Submission
+app.post('/api/quote', async (req, res) => {
+  try {
+    const { budget, timeline, application_type, email, description } = req.body;
+    if (!budget || !timeline || !application_type || !email || !description) {
+      return res.status(400).json({ error: 'All fields (budget, timeline, application_type, email, description) are required' });
+    }
+
+    const [result] = await pool.query(
+      'INSERT INTO quote_requests (budget, timeline, application_type, email, description, submitted_at) VALUES (?, ?, ?, ?, ?, NOW())',
+      [budget, timeline, application_type, email, description]
+    );
+    res.status(201).json({ message: 'Quote request submitted successfully', id: result.insertId });
+  } catch (error) {
+    console.error('Error submitting quote request:', error);
+    res.status(500).json({ error: error.message || 'Server error' });
   }
 });
 
